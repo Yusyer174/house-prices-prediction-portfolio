@@ -1,5 +1,7 @@
 # California Housing Price Prediction
 
+[![Baseline validation](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/workflows/baseline.yml/badge.svg)](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/workflows/baseline.yml)
+
 A machine-learning portfolio project exploring how housing and demographic features relate to median home values in California.
 
 ## Overview
@@ -21,7 +23,22 @@ To explore the data interactively, run `jupyter notebook notebook.ipynb` from th
 
 ## Results
 
-The earlier four-feature exploratory model reported test R² = 0.5013. The improved pipeline uses additional housing features, handles missing values without fitting preprocessing on the test set, and reports R², MSE, RMSE and MAE. Run the command above to obtain the current baseline metrics; no unverified performance figure is claimed.
+The earlier four-feature exploratory model reported test R² = 0.5013. The improved pipeline uses additional housing features and handles missing values using preprocessing fitted on training data only.
+
+**Verified baseline** ([GitHub Actions run](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/runs/43220651075), Python 3.11):
+
+| Metric | Value |
+| --- | ---: |
+| Training rows | 16,512 |
+| Test rows | 4,128 |
+| R² | 0.616119 |
+| MSE (USD²) | 5,030,408,039 |
+| RMSE (USD) | 70,925.37 |
+| MAE (USD) | 51,215.08 |
+
+R² measures explained variance relative to a mean-prediction baseline; it is not classification accuracy. The results are from a single random split and do not establish geographic or temporal generalization.
+
+Run `python train.py` to reproduce the baseline. Run `python -m unittest discover -s tests -v` to check the training pipeline.
 
 ## Repository layout
 
