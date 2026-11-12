@@ -10,7 +10,7 @@ The baseline uses linear regression, numeric median imputation and categorical o
 
 ## Run locally
 
-Requires Python 3.10+.
+Requires Python 3.11+.
 
 ```bash
 python -m pip install -r requirements.txt
