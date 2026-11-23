@@ -18,8 +18,17 @@ TARGET = "median_house_value"
 
 def run(csv_path):
     data = pd.read_csv(csv_path)
+    required = NUMERIC + CATEGORICAL + [TARGET]
+    missing = sorted(set(required) - set(data.columns))
+    if missing:
+        raise ValueError("Missing required CSV columns: " + ", ".join(missing))
+    try:
+        y = pd.to_numeric(data[TARGET], errors="raise")
+    except (TypeError, ValueError):
+        raise ValueError("Target median_house_value must be numeric and finite") from None
+    if not np.isfinite(y.to_numpy(dtype=float)).all():
+        raise ValueError("Target median_house_value must be numeric and finite")
     X = data[NUMERIC + CATEGORICAL]
-    y = data[TARGET]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     preprocessing = ColumnTransformer([
         ("numeric", SimpleImputer(strategy="median"), NUMERIC),
