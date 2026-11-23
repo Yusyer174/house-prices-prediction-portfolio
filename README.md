@@ -52,7 +52,13 @@ Run `python train.py` to reproduce the baseline. Run `python -m unittest discove
 
 The original notebook loaded the California housing CSV from the [Hands-On Machine Learning example dataset](https://github.com/ageron/handson-ml/blob/master/datasets/housing/housing.csv). The local dataset is retained for reproducibility. The repository's MIT license covers the project code, not any third-party dataset rights; consult the upstream source for dataset terms.
 
-This is an educational historical-data experiment, not a current property valuation service. Future improvements include geographic holdout validation, nonlinear baselines and error analysis across regions.
+This is an educational historical-data experiment, not a current property valuation service. See the [model card](MODEL_CARD.md) for the dataset provenance, intended use, evaluation protocol, fairness considerations and limitations.
+
+The training script checks required input columns and rejects missing, nonnumeric, or non-finite target values with a clear error before fitting. Future improvements include geographic holdout validation, nonlinear baselines and error analysis across regions.
+
+## Contributing
+
+Focused contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) and include tests and reproducible evidence when proposing changes to features or metrics.
 
 ## License
 

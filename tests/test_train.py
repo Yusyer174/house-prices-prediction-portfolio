@@ -22,6 +22,32 @@ class BaselineTests(unittest.TestCase):
         self.assertAlmostEqual(result["rmse"] ** 2, result["mse"], delta=1e-4)
         self.assertGreaterEqual(result["rmse"], result["mae"])
 
+    def test_missing_required_column_has_clear_error(self):
+        data = pd.read_csv(ROOT / "housing.csv", nrows=30).drop(columns=["median_income"])
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "missing_column.csv"
+            data.to_csv(path, index=False)
+            with self.assertRaisesRegex(ValueError, "Missing required CSV columns: median_income"):
+                run(path)
+
+    def test_non_numeric_target_rejected(self):
+        data = pd.read_csv(ROOT / "housing.csv", nrows=30)
+        data["median_house_value"] = "not-a-number"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "bad_target.csv"
+            data.to_csv(path, index=False)
+            with self.assertRaisesRegex(ValueError, "must be numeric and finite"):
+                run(path)
+
+    def test_missing_target_rejected(self):
+        data = pd.read_csv(ROOT / "housing.csv", nrows=30)
+        data.loc[0, "median_house_value"] = np.nan
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "missing_target.csv"
+            data.to_csv(path, index=False)
+            with self.assertRaisesRegex(ValueError, "must be numeric and finite"):
+                run(path)
+
     def test_missing_features_are_imputed(self):
         rng = np.random.default_rng(42)
         n = 100
