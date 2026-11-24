@@ -2,21 +2,22 @@
 
 [![Baseline validation](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/workflows/baseline.yml/badge.svg)](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/workflows/baseline.yml)
 
-A machine-learning portfolio project exploring how housing and demographic features relate to median home values in California.
+An educational scikit-learn regression baseline for historical California median housing values. The code, dataset and fixed split are included so the evaluation can be reproduced.
 
 ## Overview
 
 The baseline uses linear regression, numeric median imputation and categorical one-hot encoding. Preprocessing is fitted on the training split only, using a scikit-learn pipeline. A fixed 80/20 train/test split (random state 42) makes the experiment reproducible.
 
-![Income versus housing value](house_income_vs_value.png.png)
-
 ## Run locally
 
-Requires Python 3.11+.
+Use Python 3.11 to match the recorded CI environment.
 
 ```bash
+git clone https://github.com/Yusyer174/house-prices-prediction-portfolio.git
+cd house-prices-prediction-portfolio
 python -m pip install -r requirements.txt
 python train.py
+python -m unittest discover -s tests -v
 ```
 
 To explore the data interactively, run `jupyter notebook notebook.ipynb` from the repository root.
@@ -25,7 +26,7 @@ To explore the data interactively, run `jupyter notebook notebook.ipynb` from th
 
 The earlier four-feature exploratory model reported test R² = 0.5013. The improved pipeline uses additional housing features and handles missing values using preprocessing fitted on training data only.
 
-**Verified baseline** ([GitHub Actions run](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/runs/43220651075), Python 3.11):
+**Historical holdout results** from the [recorded GitHub Actions run](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/runs/43220651075) on Python 3.11.
 
 | Metric | Value |
 | --- | ---: |
@@ -38,7 +39,11 @@ The earlier four-feature exploratory model reported test R² = 0.5013. The impro
 
 R² measures explained variance relative to a mean-prediction baseline; it is not classification accuracy. The results are from a single random split and do not establish geographic or temporal generalization.
 
-Run `python train.py` to reproduce the baseline. Run `python -m unittest discover -s tests -v` to check the training pipeline.
+## Explore the data
+
+![Scatter plot of median income against median California housing value in US dollars](house_income_vs_value.png.png)
+
+The plot shows a relationship in the input data. The holdout metrics above measure model performance.
 
 ## Repository layout
 
@@ -46,7 +51,7 @@ Run `python train.py` to reproduce the baseline. Run `python -m unittest discove
 - `notebook.ipynb` — interactive exploration and baseline evaluation
 - `housing.csv` — local historical dataset
 - `requirements.txt` — Python dependencies
-- `house_income_vs_value.png.png` — existing exploratory visualization
+- [`house_income_vs_value.png.png`](house_income_vs_value.png.png) — exploratory income versus housing value plot
 
 ## Data and limitations
 
