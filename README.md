@@ -59,7 +59,7 @@ The original notebook loaded the California housing CSV from the [Hands-On Machi
 
 This is an educational historical-data experiment, not a current property valuation service. See the [model card](MODEL_CARD.md) for the dataset provenance, intended use, evaluation protocol, fairness considerations and limitations.
 
-The training script checks required input columns and rejects missing, nonnumeric, or non-finite target values with a clear error before fitting. Future improvements include geographic holdout validation, nonlinear baselines and error analysis across regions.
+The training script checks required input columns and rejects missing, nonnumeric, or non-finite target values with a clear error before fitting. A custom CSV needs at least six rows for the fixed 20% holdout to contain two test observations and define R². This minimum is not a recommendation for statistically meaningful evaluation. Future improvements include geographic holdout validation, nonlinear baselines and error analysis across regions.
 
 ## Contributing
 

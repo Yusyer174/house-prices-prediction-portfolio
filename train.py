@@ -28,6 +28,9 @@ def run(csv_path):
         raise ValueError("Target median_house_value must be numeric and finite") from None
     if not np.isfinite(y.to_numpy(dtype=float)).all():
         raise ValueError("Target median_house_value must be numeric and finite")
+    # With a 20% holdout, at least six rows are needed for two test samples.
+    if len(data) < 6:
+        raise ValueError("At least 6 rows are required for an R2 score with the 20% holdout")
     X = data[NUMERIC + CATEGORICAL]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     preprocessing = ColumnTransformer([
