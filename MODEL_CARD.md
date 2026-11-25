@@ -20,7 +20,7 @@ Learning about train/test splitting, numeric and categorical preprocessing, base
 - Categorical feature: `ocean_proximity`.
 - Target: `median_house_value`.
 
-The script rejects missing required CSV columns and non-finite or nonnumeric targets. Missing numeric features are imputed with the **training-set median**; categorical missing values use the **training-set most frequent** value, followed by one-hot encoding. The full preprocessing pipeline is fit only on the training split.
+The script rejects missing required CSV columns and non-finite or nonnumeric targets. Custom CSVs with fewer than six rows are rejected because the 20% holdout would not contain two test observations; this is a mathematical minimum, not sufficient sample size for meaningful validation. Missing numeric features are imputed with the **training-set median**; categorical missing values use the **training-set most frequent** value, followed by one-hot encoding. The full preprocessing pipeline is fit only on the training split.
 
 ## Evaluation protocol
 
