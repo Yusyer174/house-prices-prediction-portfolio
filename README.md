@@ -54,6 +54,21 @@ The linear model outperforms the dummy on the same held-out observations. The ra
 
 See [experiment notes](docs/GEOGRAPHIC_EXPERIMENT.md) for the exact recorded protocol and interpretation.
 
+## Grouped model comparison (development only)
+
+Run `python compare_models.py` for five-fold geographic cross-validation of fixed linear regression, Random Forest and Gradient Boosting candidates, plus a training-mean dummy reference. Only the original geographic development partition is used. The primary comparison is pooled out-of-fold MAE on identical validation rows. The previous 11 held-out cells are not scored by the new models. See [comparison protocol](docs/MODEL_COMPARISON.md) for configurations, assumptions and interpretation. This is exploratory model selection, not an independent final test.
+
+Recorded [CI results](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/runs/46148760695) (2026-11-28, source commit `4c1a1b9`): 14,410 development rows across 44 cells; 6,230 reserved rows across 11 cells; zero reserved rows scored by this comparison. All 17 tests passed.
+
+| Model | Pooled R² | RMSE (USD) | MAE (USD) |
+| --- | ---: | ---: | ---: |
+| Random Forest | 0.648948 | 66,782.07 | 47,578.25 |
+| Gradient Boosting | 0.601424 | 71,158.99 | 50,763.68 |
+| Linear regression | 0.557791 | 74,952.79 | 53,081.09 |
+| Training-mean dummy | -0.067184 | 116,437.75 | 92,548.50 |
+
+Random Forest ranks first by the predefined pooled MAE criterion (10.37% lower than the linear candidate), and has the lowest MAE among the three candidates in each of the five folds. This is a development-CV result, not independent final-test evidence or a claim of real-world prediction accuracy. The historical random and geographic baseline metrics remain separate.
+
 ## Explore the data
 
 ![Scatter plot of median income against median California housing value in US dollars](house_income_vs_value.png.png)
@@ -64,6 +79,7 @@ The plot shows a relationship in the input data. The holdout metrics above measu
 
 - `train.py` — reproducible random-split training and evaluation
 - `evaluate_geographic.py` — exploratory geographic holdout and dummy comparison
+- `compare_models.py` — fixed-candidate grouped CV on development cells
 - `notebook.ipynb` — interactive exploration and baseline evaluation
 - `housing.csv` — local historical dataset
 - `requirements.txt` — Python dependencies

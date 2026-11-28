@@ -69,9 +69,24 @@ Recorded [CI results](https://github.com/Yusyer174/house-prices-prediction-portf
 
 The linear model outperforms the dummy on the same held-out observations. The random-split and geographic metrics are not a controlled head-to-head model comparison because the evaluated rows and training sizes differ. These are exploratory historical results, not proof of geographic robustness. All 12 unit tests passed in the cited run.
 
+## Development-only nonlinear comparison
+
+The separate [comparison protocol](docs/MODEL_COMPARISON.md) compares three fixed candidates on five geographic folds within the original development partition. It does not alter this model card's historical baseline or score new candidates on the previously held-out cells. The resulting ranking is exploratory, not evidence of independent final-test performance.
+
+Recorded [CI results](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/runs/46148760695) (2026-11-28, source commit `4c1a1b9`): 14,410 development rows across 44 cells; 6,230 reserved rows across 11 cells; zero reserved rows scored by this comparison. All 17 tests passed.
+
+| Model | Pooled R² | RMSE (USD) | MAE (USD) |
+| --- | ---: | ---: | ---: |
+| Random Forest | 0.648948 | 66,782.07 | 47,578.25 |
+| Gradient Boosting | 0.601424 | 71,158.99 | 50,763.68 |
+| Linear regression | 0.557791 | 74,952.79 | 53,081.09 |
+| Training-mean dummy | -0.067184 | 116,437.75 | 92,548.50 |
+
+Random Forest ranks first by the predefined pooled MAE criterion (10.37% lower than the linear candidate), and has the lowest MAE among the three candidates in each of the five folds. This is a development-CV result, not independent final-test evidence or a claim of real-world prediction accuracy. The historical random and geographic baseline metrics remain separate.
+
 ## Next experiments (not yet claimed)
 
 - Buffered geographic validation and additional predefined group splits.
 - Multiple random seeds or cross-validation, without tuning on a reserved final test set.
 - Error analysis by region and price segment.
-- Nonlinear baselines evaluated under a pre-registered comparison protocol.
+- Independently reserved evaluation data for a frozen selected model.
