@@ -16,6 +16,18 @@ NUMERIC = ["median_income", "housing_median_age", "total_rooms", "total_bedrooms
 CATEGORICAL = ["ocean_proximity"]
 TARGET = "median_house_value"
 
+def build_model():
+    """Create an unfitted pipeline shared by both evaluation protocols."""
+    preprocessing = ColumnTransformer([
+        ("numeric", SimpleImputer(strategy="median"), NUMERIC),
+        ("category", Pipeline([
+            ("impute", SimpleImputer(strategy="most_frequent")),
+            ("encode", OneHotEncoder(handle_unknown="ignore", drop="first"))
+        ]), CATEGORICAL)
+    ])
+    return Pipeline([("preprocessing", preprocessing), ("regression", LinearRegression())])
+
+
 def run(csv_path):
     data = pd.read_csv(csv_path)
     required = NUMERIC + CATEGORICAL + [TARGET]
@@ -33,14 +45,7 @@ def run(csv_path):
         raise ValueError("At least 6 rows are required for an R2 score with the 20% holdout")
     X = data[NUMERIC + CATEGORICAL]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    preprocessing = ColumnTransformer([
-        ("numeric", SimpleImputer(strategy="median"), NUMERIC),
-        ("category", Pipeline([
-            ("impute", SimpleImputer(strategy="most_frequent")),
-            ("encode", OneHotEncoder(handle_unknown="ignore", drop="first"))
-        ]), CATEGORICAL)
-    ])
-    model = Pipeline([("preprocessing", preprocessing), ("regression", LinearRegression())])
+    model = build_model()
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)
     return {

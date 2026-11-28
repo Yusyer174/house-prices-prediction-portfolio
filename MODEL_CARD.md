@@ -56,9 +56,13 @@ Use Python 3.11 for the recorded baseline; see `requirements.txt` for package ve
 - Demographic or geographic features may reflect socioeconomic disparities. No group fairness or downstream-impact study has been performed.
 - The dataset's provenance and limitations should be reviewed before any reuse.
 
+## Separate geographic experiment
+
+The new script `evaluate_geographic.py` defines a fixed one-degree group holdout (20% of cells, seed 42) with no shared cells between train and test. Coordinates define groups only and are not added as features. The same preprocessing and regression pipeline is fitted on the training partition, alongside a training-mean dummy comparator. Run the script to obtain results; the historical metrics above remain unchanged. This tests transfer to held-out cells, not arbitrary new regions or future prices. Neighboring cells may be spatially correlated, and a single group split is not a robustness estimate.
+
 ## Next experiments (not yet claimed)
 
-- Geographic holdout instead of random splitting.
+- Buffered geographic validation and additional predefined group splits.
 - Multiple random seeds or cross-validation, without tuning on a reserved final test set.
 - Error analysis by region and price segment.
 - Nonlinear baselines evaluated under a pre-registered comparison protocol.

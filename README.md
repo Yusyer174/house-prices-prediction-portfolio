@@ -39,6 +39,10 @@ The earlier four-feature exploratory model reported test R² = 0.5013. The impro
 
 R² measures explained variance relative to a mean-prediction baseline; it is not classification accuracy. The results are from a single random split and do not establish geographic or temporal generalization.
 
+## Geographic holdout experiment
+
+Run `python evaluate_geographic.py` to reproduce a separate fixed-protocol experiment on the same historical dataset. Unlike the random baseline, this holds out entire one-degree latitude/longitude cells using seed 42. It compares the unchanged linear model with a training-mean dummy predictor and reports group overlap, row counts, metrics and the dataset hash. The 20% target applies to groups, not rows. Adjacent cells may still be correlated; this is exploratory, not a buffered or temporal validation. No result has been selected or tuned to improve the historical baseline.
+
 ## Explore the data
 
 ![Scatter plot of median income against median California housing value in US dollars](house_income_vs_value.png.png)
