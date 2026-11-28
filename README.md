@@ -43,6 +43,17 @@ R² measures explained variance relative to a mean-prediction baseline; it is no
 
 Run `python evaluate_geographic.py` to reproduce a separate fixed-protocol experiment on the same historical dataset. Unlike the random baseline, this holds out entire one-degree latitude/longitude cells using seed 42. It compares the unchanged linear model with a training-mean dummy predictor and reports group overlap, row counts, metrics and the dataset hash. The 20% target applies to groups, not rows. Adjacent cells may still be correlated; this is exploratory, not a buffered or temporal validation. No result has been selected or tuned to improve the historical baseline.
 
+Recorded [CI results](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/runs/46148453511) (Python 3.11.18, 2026-11-28, commit `195f01b`): 44 training cells / 14,410 rows; 11 held-out cells / 6,230 rows (30.18% of rows); zero overlapping cells.
+
+| Model | R² | RMSE (USD) | MAE (USD) |
+| --- | ---: | ---: | ---: |
+| Linear regression | 0.618172 | 74,424.66 | 50,958.57 |
+| Training-mean dummy | -0.021996 | 121,760.81 | 99,167.70 |
+
+The linear model outperforms the dummy on the same held-out observations. The random-split and geographic metrics are not a controlled head-to-head model comparison because the evaluated rows and training sizes differ. These are exploratory historical results, not proof of geographic robustness. All 12 unit tests passed in the cited run.
+
+See [experiment notes](docs/GEOGRAPHIC_EXPERIMENT.md) for the exact recorded protocol and interpretation.
+
 ## Explore the data
 
 ![Scatter plot of median income against median California housing value in US dollars](house_income_vs_value.png.png)
@@ -51,7 +62,8 @@ The plot shows a relationship in the input data. The holdout metrics above measu
 
 ## Repository layout
 
-- `train.py` — reproducible training and evaluation
+- `train.py` — reproducible random-split training and evaluation
+- `evaluate_geographic.py` — exploratory geographic holdout and dummy comparison
 - `notebook.ipynb` — interactive exploration and baseline evaluation
 - `housing.csv` — local historical dataset
 - `requirements.txt` — Python dependencies
@@ -63,7 +75,7 @@ The original notebook loaded the California housing CSV from the [Hands-On Machi
 
 This is an educational historical-data experiment, not a current property valuation service. See the [model card](MODEL_CARD.md) for the dataset provenance, intended use, evaluation protocol, fairness considerations and limitations.
 
-The training script checks required input columns and rejects missing, nonnumeric, or non-finite target values with a clear error before fitting. A custom CSV needs at least six rows for the fixed 20% holdout to contain two test observations and define R². This minimum is not a recommendation for statistically meaningful evaluation. Future improvements include geographic holdout validation, nonlinear baselines and error analysis across regions.
+The training script checks required input columns and rejects missing, nonnumeric, or non-finite target values with a clear error before fitting. A custom CSV needs at least six rows for the fixed 20% holdout to contain two test observations and define R². This minimum is not a recommendation for statistically meaningful evaluation. Future improvements include buffered geographic validation, predefined nonlinear comparisons and error analysis across regions.
 
 ## Contributing
 
