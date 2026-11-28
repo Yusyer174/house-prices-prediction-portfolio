@@ -69,6 +69,10 @@ Recorded [CI results](https://github.com/Yusyer174/house-prices-prediction-portf
 
 Random Forest ranks first by the predefined pooled MAE criterion (10.37% lower than the linear candidate), and has the lowest MAE among the three candidates in each of the five folds. This is a development-CV result, not independent final-test evidence or a claim of real-world prediction accuracy. The historical random and geographic baseline metrics remain separate.
 
+## Random Forest diagnostics
+
+Run `python diagnose_forest.py` to analyze development-only out-of-fold errors by actual-value band and fold, and raw-feature permutation importance. The selected configuration is unchanged; see [diagnostic protocol](docs/FOREST_DIAGNOSTICS.md). These exploratory measures do not establish causality or fairness.
+
 ## Explore the data
 
 ![Scatter plot of median income against median California housing value in US dollars](house_income_vs_value.png.png)
@@ -80,6 +84,7 @@ The plot shows a relationship in the input data. The holdout metrics above measu
 - `train.py` — reproducible random-split training and evaluation
 - `evaluate_geographic.py` — exploratory geographic holdout and dummy comparison
 - `compare_models.py` — fixed-candidate grouped CV on development cells
+- `diagnose_forest.py` — development-only forest error and permutation analysis
 - `notebook.ipynb` — interactive exploration and baseline evaluation
 - `housing.csv` — local historical dataset
 - `requirements.txt` — Python dependencies

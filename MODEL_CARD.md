@@ -84,9 +84,13 @@ Recorded [CI results](https://github.com/Yusyer174/house-prices-prediction-portf
 
 Random Forest ranks first by the predefined pooled MAE criterion (10.37% lower than the linear candidate), and has the lowest MAE among the three candidates in each of the five folds. This is a development-CV result, not independent final-test evidence or a claim of real-world prediction accuracy. The historical random and geographic baseline metrics remain separate.
 
+## Exploratory Random Forest diagnostics
+
+The [diagnostic protocol](docs/FOREST_DIAGNOSTICS.md) analyzes the selected candidate on the same development folds without tuning or scoring the reserved cells. Price-band residuals and permutation importance are descriptive, not causal or fairness evidence.
+
 ## Next experiments (not yet claimed)
 
 - Buffered geographic validation and additional predefined group splits.
 - Multiple random seeds or cross-validation, without tuning on a reserved final test set.
-- Error analysis by region and price segment.
+- Buffered spatial evaluation and externally specified error analysis.
 - Independently reserved evaluation data for a frozen selected model.
