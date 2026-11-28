@@ -41,3 +41,31 @@ Fold scores are correlated and their standard deviation is descriptive, not a co
 2. Explain how Random Forest and Gradient Boosting differ.
 3. Explain why pooled MAE weights observations rather than averaging fold MAEs equally.
 4. Compare the weakest fold with the pooled result before choosing a candidate.
+
+
+## Recorded results
+
+Recorded [CI results](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/runs/46148760695) (2026-11-28, source commit `4c1a1b9`): 14,410 development rows across 44 cells; 6,230 reserved rows across 11 cells; zero reserved rows scored by this comparison. All 17 tests passed.
+
+| Model | Pooled R² | RMSE (USD) | MAE (USD) |
+| --- | ---: | ---: | ---: |
+| Random Forest | 0.648948 | 66,782.07 | 47,578.25 |
+| Gradient Boosting | 0.601424 | 71,158.99 | 50,763.68 |
+| Linear regression | 0.557791 | 74,952.79 | 53,081.09 |
+| Training-mean dummy | -0.067184 | 116,437.75 | 92,548.50 |
+
+Random Forest ranks first by the predefined pooled MAE criterion (10.37% lower than the linear candidate), and has the lowest MAE among the three candidates in each of the five folds. This is a development-CV result, not independent final-test evidence or a claim of real-world prediction accuracy. The historical random and geographic baseline metrics remain separate.
+
+### Per-fold MAE (USD)
+
+| Fold | Validation rows | Validation cells | Linear | Random Forest | Gradient Boosting |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | 2882 | 7 | 74,507.88 | 61,868.88 | 69,843.49 |
+| 2 | 2882 | 9 | 48,170.26 | 42,483.19 | 46,422.26 |
+| 3 | 2883 | 9 | 48,183.48 | 44,727.44 | 47,093.76 |
+| 4 | 2882 | 10 | 47,193.49 | 45,796.84 | 46,455.33 |
+| 5 | 2881 | 9 | 47,350.04 | 43,014.33 | 44,002.48 |
+
+Fold 1 is the hardest for all three candidates by MAE. Random Forest's fold MAE ranges from 42,483.19 to 61,868.88 USD. This variation remains material, and no confidence interval or independent generalization claim follows. The selected configuration is a candidate for a future independently reserved evaluation; no further tuning or scoring of historical reserved cells was performed by this comparison.
+
+[Exact recorded JSON](MODEL_COMPARISON_RESULTS.json) preserves all model and fold scores and the dataset hash. The recorded source and hosted run above identify the evidence. The original baseline commands ran in the same workflow; they are not part of the candidate ranking.
