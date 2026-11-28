@@ -23,4 +23,5 @@ jobs:
       - run: python train.py
       - run: python evaluate_geographic.py
       - run: python compare_models.py
+      - run: python diagnose_forest.py
       - run: python -m unittest discover -s tests -v
