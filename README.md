@@ -54,6 +54,10 @@ The linear model outperforms the dummy on the same held-out observations. The ra
 
 See [experiment notes](docs/GEOGRAPHIC_EXPERIMENT.md) for the exact recorded protocol and interpretation.
 
+## Grouped model comparison (development only)
+
+Run `python compare_models.py` for five-fold geographic cross-validation of fixed linear regression, Random Forest and Gradient Boosting candidates, plus a training-mean dummy reference. Only the original geographic development partition is used. The primary comparison is pooled out-of-fold MAE on identical validation rows. The previous 11 held-out cells are not scored by the new models. See [comparison protocol](docs/MODEL_COMPARISON.md) for configurations, assumptions and interpretation. This is exploratory model selection, not an independent final test.
+
 ## Explore the data
 
 ![Scatter plot of median income against median California housing value in US dollars](house_income_vs_value.png.png)
@@ -64,6 +68,7 @@ The plot shows a relationship in the input data. The holdout metrics above measu
 
 - `train.py` — reproducible random-split training and evaluation
 - `evaluate_geographic.py` — exploratory geographic holdout and dummy comparison
+- `compare_models.py` — fixed-candidate grouped CV on development cells
 - `notebook.ipynb` — interactive exploration and baseline evaluation
 - `housing.csv` — local historical dataset
 - `requirements.txt` — Python dependencies

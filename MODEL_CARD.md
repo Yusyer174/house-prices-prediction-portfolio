@@ -69,9 +69,13 @@ Recorded [CI results](https://github.com/Yusyer174/house-prices-prediction-portf
 
 The linear model outperforms the dummy on the same held-out observations. The random-split and geographic metrics are not a controlled head-to-head model comparison because the evaluated rows and training sizes differ. These are exploratory historical results, not proof of geographic robustness. All 12 unit tests passed in the cited run.
 
+## Development-only nonlinear comparison
+
+The separate [comparison protocol](docs/MODEL_COMPARISON.md) compares three fixed candidates on five geographic folds within the original development partition. It does not alter this model card's historical baseline or score new candidates on the previously held-out cells. The resulting ranking is exploratory, not evidence of independent final-test performance.
+
 ## Next experiments (not yet claimed)
 
 - Buffered geographic validation and additional predefined group splits.
 - Multiple random seeds or cross-validation, without tuning on a reserved final test set.
 - Error analysis by region and price segment.
-- Nonlinear baselines evaluated under a pre-registered comparison protocol.
+- Independently reserved evaluation data for a frozen selected model.
