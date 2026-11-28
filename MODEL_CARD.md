@@ -26,7 +26,7 @@ The script rejects missing required CSV columns and non-finite or nonnumeric tar
 
 - Single random 80/20 split, `random_state=42`.
 - 16,512 training examples; 4,128 held-out examples.
-- No temporal validation or geographic holdout has been performed.
+- This historical random-split protocol is distinct from the geographic experiment below. No temporal validation has been performed.
 
 | Test-set metric | Recorded baseline |
 | --- | ---: |
@@ -49,16 +49,29 @@ Use Python 3.11 for the recorded baseline; see `requirements.txt` for package ve
 
 ## Limitations and risks
 
-- Geographic and temporal generalization were **not** evaluated; nearby observations may be correlated.
+- Temporal generalization was **not** evaluated. The exploratory geographic split does not exclude adjacent cells or establish robust transfer to arbitrary regions.
 - Historical census-like aggregates are proxies, not a current home-level appraisal.
 - A single split gives no confidence interval or robustness guarantee.
 - Baseline linear regression may underfit nonlinear interactions.
 - Demographic or geographic features may reflect socioeconomic disparities. No group fairness or downstream-impact study has been performed.
 - The dataset's provenance and limitations should be reviewed before any reuse.
 
+## Separate geographic experiment
+
+The new script `evaluate_geographic.py` defines a fixed one-degree group holdout (20% of cells, seed 42) with no shared cells between train and test. Coordinates define groups only and are not added as features. The same preprocessing and regression pipeline is fitted on the training partition, alongside a training-mean dummy comparator. The recorded results below are separate from the unchanged historical metrics above. This tests transfer to held-out cells, not arbitrary new regions or future prices. Neighboring cells may be spatially correlated, and a single group split is not a robustness estimate.
+
+Recorded [CI results](https://github.com/Yusyer174/house-prices-prediction-portfolio/actions/runs/46148453511) (Python 3.11.18, 2026-11-28, commit `195f01b`): 44 training cells / 14,410 rows; 11 held-out cells / 6,230 rows (30.18% of rows); zero overlapping cells.
+
+| Model | R² | RMSE (USD) | MAE (USD) |
+| --- | ---: | ---: | ---: |
+| Linear regression | 0.618172 | 74,424.66 | 50,958.57 |
+| Training-mean dummy | -0.021996 | 121,760.81 | 99,167.70 |
+
+The linear model outperforms the dummy on the same held-out observations. The random-split and geographic metrics are not a controlled head-to-head model comparison because the evaluated rows and training sizes differ. These are exploratory historical results, not proof of geographic robustness. All 12 unit tests passed in the cited run.
+
 ## Next experiments (not yet claimed)
 
-- Geographic holdout instead of random splitting.
+- Buffered geographic validation and additional predefined group splits.
 - Multiple random seeds or cross-validation, without tuning on a reserved final test set.
 - Error analysis by region and price segment.
 - Nonlinear baselines evaluated under a pre-registered comparison protocol.
